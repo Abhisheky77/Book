@@ -2,12 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import { Link } from "react-router-dom";
+
 
 const LoginPage = () => {
     return (
     <div className="flex items-center justify-center p-20 ">
-        <Card className="w-full max-w-md border-gray-400">
+        <Card className="w-full max-w-md border-gray-300">
             <CardHeader>
                 <CardTitle>Login to your account</CardTitle>
                 <CardDescription>
@@ -44,7 +45,7 @@ const LoginPage = () => {
                                 Login with Google
                             </Button>
                             <FieldDescription className="text-center">
-                                Don&apos;t have an account? <a href="#">Sign up</a>
+                                Don&apos;t have an account? <Link to={'/register'}>Sign up</Link>
                             </FieldDescription>
                         </Field>
                     </FieldGroup>
