@@ -2,10 +2,43 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { login } from "@/http/api";
+import { useMutation } from "@tanstack/react-query";
+import { useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const LoginPage = () => {
+
+    const navigate = useNavigate();
+    
+    const emailRef =useRef<HTMLInputElement>(null)
+    const passwordRef= useRef<HTMLInputElement>(null)
+    console.log(emailRef ,"+",passwordRef);
+
+     const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      // Invalidate and refetch
+      console.log("Login successful");
+      navigate('/')
+
+      
+     
+    },
+  })
+    
+    const handleLoginSubmit = ()=>{
+        const email = emailRef.current?.value;
+        const password = passwordRef.current?.value;
+        console.log("data",email , password);
+
+        if(!email || !password){
+            return alert('please enter email and password');
+        }
+         mutation.mutate({email,password})
+    }
+
     return (
     <div className="flex items-center justify-center p-20 ">
         <Card className="w-full max-w-md border-gray-300">
@@ -21,6 +54,7 @@ const LoginPage = () => {
                         <Field>
                             <FieldLabel htmlFor="email">Email</FieldLabel>
                             <Input id="email"
+                               ref={emailRef}
                                 type="email"
                                 placeholder="m@example.com"
                                 required
@@ -37,13 +71,13 @@ const LoginPage = () => {
                                     Forgot your password?
                                 </a>
                             </div>
-                            <Input  className=" border-gray-400" id="password" type="password" placeholder="Enter your password" required />
+                            <Input 
+                             ref={passwordRef} 
+                            className=" border-gray-400" id="password" type="password" placeholder="Enter your password" required />
                         </Field>
                         <Field>
-                            <Button type="submit">Login</Button>
-                            <Button variant="outline" type="button">
-                                Login with Google
-                            </Button>
+                            <Button onClick={handleLoginSubmit}  type="button">Login</Button>
+                            <Button variant="outline" type="button">Login with Google</Button>
                             <FieldDescription className="text-center">
                                 Don&apos;t have an account? <Link to={'/auth/register'}>Sign up</Link>
                             </FieldDescription>
